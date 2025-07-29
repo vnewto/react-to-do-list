@@ -1,4 +1,4 @@
-{/* Create todo form component */}
+//Create todo form component
 export default function TodoForm() {
     return (
         // form to add a new todo item
