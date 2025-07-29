@@ -1,6 +1,6 @@
-function TodoListItem( { id, title } ) {
+function TodoListItem(todo) {
     return (
-        <li>{ title }</li>
+        <li>{ todo.title }</li>
     );
 }
 
