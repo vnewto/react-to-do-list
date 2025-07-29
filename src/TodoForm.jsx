@@ -7,5 +7,5 @@ export default function TodoForm() {
             <input type="text" id="todoTitle"></input>
             <button type="submit">Add Todo</button>
         </form>
-    )
+    );
 }
