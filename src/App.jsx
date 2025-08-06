@@ -20,7 +20,7 @@ function App() {
       {/* add instance of TodoForm */}
       <TodoForm onAddTodo={addTodo}></TodoForm>
       {/* add instance of TodoList */}
-      <TodoList></TodoList>
+      <TodoList todoList={todoList}></TodoList>
     </div>
   )
 }
