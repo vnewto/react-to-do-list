@@ -3,7 +3,7 @@ function TodoListItem( {todo, onCompleteTodo} ) {
         <li>
             <form>
                 {/* add checkbox to change state to isCompleted for each todo item */}
-                <input type="checkbox" checked={todo.isCompleted} onChange={() => onCompleteTodo}></input>
+                <input type="checkbox" checked={todo.isCompleted} onChange={() => onCompleteTodo(todo.id)}></input>
                 {todo.title}
             </form>
         </li>
