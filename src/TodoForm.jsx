@@ -1,22 +1,22 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 //Create todo form component
 export default function TodoForm(props) {
 
     const todoTitleInput = useRef("")
+
+    // create a workingTodoTitle state variable with the accompanying state update function
+    const [workingTodoTitle, setWorkingTodoTitle] = useState("")
     
     function handleAddTodo(event) {
         // prevent the page from refreshing
         event.preventDefault() 
-        
-        //declare variable for the title of the input
-        const title = event.target.title.value
 
-        // invoke onAddTodo function, passing in title as parameter
-        props.onAddTodo(title)
+        // invoke onAddTodo function, passing in workingTitle as parameter
+        props.onAddTodo(workingTodoTitle)
 
         //reset input to empty string
-        event.target.title.value=""
+        setWorkingTodoTitle("")
 
         //refocus on form input so user doesn't have to click on it again
         todoTitleInput.current.focus()
@@ -26,8 +26,8 @@ export default function TodoForm(props) {
         // form to add a new todo item
         <form onSubmit={handleAddTodo}>
             <label htmlFor="todoTitle">Todo</label>
-            <input type="text" id="todoTitle" name="title" ref={todoTitleInput}></input>
-            <button type="submit">Add Todo</button>
+            <input value={workingTodoTitle} type="text" id="todoTitle" name="title" ref={todoTitleInput} onChange={(event) => setWorkingTodoTitle(event.target.value)}></input>
+            <button type="submit" disabled={workingTodoTitle.length === 0}>Add Todo</button>
         </form>
     );
 }
