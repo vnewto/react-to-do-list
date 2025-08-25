@@ -11,6 +11,13 @@ function TodoListItem( {todo, onCompleteTodo} ) {
         // reset working title to todo.title
         setWorkingTitle(todo.title)
         // set isEditing state value to false
+        setIsEditing(false)
+    }
+
+    // create helper function for when user edits the todo and updates it
+    function handleEdit(event) {
+        // set working title to the new value that has been entered
+        setWorkingTitle(event.target.value)
     }
     
     return (
@@ -18,7 +25,7 @@ function TodoListItem( {todo, onCompleteTodo} ) {
         isEditing ? (
             // if true, display an instance of TextInputWithLabel with its props value set to todo.title
             <>
-                <TextInputWithLabel value={todo.title} />
+                <TextInputWithLabel value={workingTitle} onChange={handleEdit}/>
                 {/* create a cancel button for user to cancel out of editing mode */}
                 <button type="button" onClick={handleCancel}>Cancel</button>
             </>
