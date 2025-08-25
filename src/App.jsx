@@ -28,13 +28,31 @@ function App() {
     setTodoList(updatedTodos)
   }
 
+  // function for updating a todo that updates the todo list state when a todo is edited
+  function updateTodo(editedTodo) {
+    // map through the todos, comparing each todo.id with the updated todo's id
+    const updatedTodos = todoList.map((todo) => {
+      // if the id matches the id of the edited todo, return a new object that destructures the edited todo
+      if (todo.id == editedTodo.id) {
+        return {...editedTodo}
+      }
+      else return todo
+    })
+    // update the todoList state value with updatedTodos
+    setTodoList(updatedTodos)
+  }
+
   return (
     <div>
       <h1>My ToDos</h1>
       {/* add instance of TodoForm */}
       <TodoForm onAddTodo={addTodo}></TodoForm>
       {/* add instance of TodoList */}
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo}></TodoList>
+      <TodoList 
+        todoList={todoList} 
+        onCompleteTodo={completeTodo} 
+        onUpdateTodo={updateTodo}>
+      </TodoList>
     </div>
   )
 }

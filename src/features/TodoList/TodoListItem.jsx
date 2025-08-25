@@ -1,7 +1,7 @@
 import {useState} from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel";
 
-function TodoListItem( {todo, onCompleteTodo} ) {
+function TodoListItem( {todo, onCompleteTodo, onUpdateTodo} ) {
     
     const[isEditing, setIsEditing] = useState(false)
     const[workingTitle, setWorkingTitle] = useState(todo.title)
@@ -14,10 +14,25 @@ function TodoListItem( {todo, onCompleteTodo} ) {
         setIsEditing(false)
     }
 
-    // create helper function for when user edits the todo and updates it
+    // create helper function for when user edits the todo 
     function handleEdit(event) {
         // set working title to the new value that has been entered
         setWorkingTitle(event.target.value)
+    }
+
+    // create helper function for when user updates the todo
+    function handleUpdate(event) {
+        // call event.preventdefault
+        event.preventDefault()
+        if (isEditing) {
+            // call onUpdateTodo and pass in an object that destructures todo and sets the title equal to workingTitle
+            onUpdateTodo({todo})
+            // sets isEditing state value to false
+            setIsEditing(false)
+        } else {
+            // if isEditing is false, exit 
+            return
+        }
     }
     
     return (
@@ -28,6 +43,7 @@ function TodoListItem( {todo, onCompleteTodo} ) {
                 <TextInputWithLabel value={workingTitle} onChange={handleEdit}/>
                 {/* create a cancel button for user to cancel out of editing mode */}
                 <button type="button" onClick={handleCancel}>Cancel</button>
+                <button type="button" onClick={handleUpdate}>Update</button>
             </>
         ) : (
             // If false, display the existing form and its contents. The form will contain the checkbox input and the todo title.
@@ -38,7 +54,8 @@ function TodoListItem( {todo, onCompleteTodo} ) {
                         type="checkbox"
                         id={`checkbox${todo.id}`}
                         checked={todo.isCompleted} 
-                        onChange={() => onCompleteTodo(todo.id)}>
+                        onChange={() => onCompleteTodo(todo.id)}
+                        onSubmit={handleUpdate}>
                     </input>
                     {/* Add an onClick handler to the span that toggles the isEditing state value to true. */}
                     <span onClick={() => setIsEditing(true)}>{todo.title}</span>
