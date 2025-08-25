@@ -27,6 +27,7 @@ export default function TodoForm(props) {
         // form to add a new todo item
         <form onSubmit={handleAddTodo}>
             <TextInputWithLabel 
+                type="text"
                 value={workingTodoTitle} 
                 ref={todoTitleInput} 
                 onChange={(event) => setWorkingTodoTitle(event.target.value)} 

@@ -1,11 +1,10 @@
-export default function TextInputWithLabel ( {elementID, onChange, ref, value, labelText} ) {
+export default function TextInputWithLabel ( {elementId, onChange, ref, value, labelText} ) {
     return (
         // create fragment that contains a label and an input
         <>
-            <label htmlFor={elementID}>{labelText}</label>
+            <label htmlFor={elementId}>{labelText}</label>
             <input
-                type="text"
-                id={elementID}
+                id={elementId}
                 ref={ref}
                 value={value}
                 onChange={onChange}>

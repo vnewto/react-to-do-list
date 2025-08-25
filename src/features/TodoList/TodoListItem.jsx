@@ -54,8 +54,7 @@ function TodoListItem( {todo, onCompleteTodo, onUpdateTodo} ) {
                         type="checkbox"
                         id={`checkbox${todo.id}`}
                         checked={todo.isCompleted} 
-                        onChange={() => onCompleteTodo(todo.id)}
-                        onSubmit={handleUpdate}>
+                        onChange={() => onCompleteTodo(todo.id)}>
                     </input>
                     {/* Add an onClick handler to the span that toggles the isEditing state value to true. */}
                     <span onClick={() => setIsEditing(true)}>{todo.title}</span>
