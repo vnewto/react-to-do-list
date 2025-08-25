@@ -14,7 +14,7 @@ function TodoList ({ todoList, onCompleteTodo, onUpdateTodo }) {
                 <p>Add a todo above to get started</p> : 
                 // if items, display items
                 <ul>
-                    {filteredTodoList.map(todo => <TodoListItem key={todo.id} todo={todo} onCompleteTodo={onCompleteTodo}/>)}
+                    {filteredTodoList.map(todo => <TodoListItem key={todo.id} todo={todo} onCompleteTodo={onCompleteTodo} onUpdateTodo={onUpdateTodo}/>)}
                 </ul>}
         </>
     );

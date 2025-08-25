@@ -31,7 +31,8 @@ export default function TodoForm(props) {
                 ref={todoTitleInput} 
                 onChange={(event) => setWorkingTodoTitle(event.target.value)} 
                 elementId="todoTitle" 
-                labelText="toDo"></TextInputWithLabel>
+                labelText="toDo">
+            </TextInputWithLabel>
             <button type="submit" disabled={workingTodoTitle.length === 0}>Add Todo</button>
         </form>
     );

@@ -26,7 +26,7 @@ function TodoListItem( {todo, onCompleteTodo, onUpdateTodo} ) {
         event.preventDefault()
         if (isEditing) {
             // call onUpdateTodo and pass in an object that destructures todo and sets the title equal to workingTitle
-            onUpdateTodo({todo})
+            onUpdateTodo({...todo, title: workingTitle})
             // sets isEditing state value to false
             setIsEditing(false)
         } else {
@@ -39,12 +39,12 @@ function TodoListItem( {todo, onCompleteTodo, onUpdateTodo} ) {
         // if statement for whether the user is or is not currently editing the todo
         isEditing ? (
             // if true, display an instance of TextInputWithLabel with its props value set to todo.title
-            <>
+            <form onSubmit={handleUpdate}>
                 <TextInputWithLabel value={workingTitle} onChange={handleEdit}/>
                 {/* create a cancel button for user to cancel out of editing mode */}
                 <button type="button" onClick={handleCancel}>Cancel</button>
                 <button type="button" onClick={handleUpdate}>Update</button>
-            </>
+            </form>
         ) : (
             // If false, display the existing form and its contents. The form will contain the checkbox input and the todo title.
             <li>
