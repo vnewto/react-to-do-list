@@ -1,14 +1,49 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './App.css';
 import TodoList from './features/TodoList/TodoList.jsx';
 import TodoForm from './features/TodoForm.jsx';
-import { useRef } from 'react'
-import.meta.env.VITE_API_BASE_URL
+
 
 function App() {
 
   // create a new state value for a new todo
-  const [todoList, setTodoList] = useState([])
+  const [todoList, setTodoList] = useState([]);
+
+  // Create an isLoading state variable with a defaultValue of false
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Create a state variable for errorMessage and default to an empty string
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // declare variables that will be used for fetch requests
+  const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+  const token = `Bearer ${import.meta.env.VITE_PAT}`;
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      // set options object for the fetch request
+      const options = {
+        method: 'GET',
+        headers: { "Authorization": token }
+      };      
+      // update isLoading to true
+      setIsLoading(true);
+      //set up try/catch/finally block for handling the fetch
+      try {
+        const resp = await fetch(url, options);
+        // show error message if response not ok
+        if (!resp.ok) {
+          throw new Error(resp.message)
+        };
+        // if response is ok, convert promise from json
+        const data = await resp.json();
+        console.log(data)
+      } catch(error) {
+        console.log(error.message);
+      }
+    };
+    fetchTodos()
+  }, [])
 
   // function for adding a new item to the todo list
   function addTodo(title) {
