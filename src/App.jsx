@@ -37,10 +37,29 @@ function App() {
         };
         // if response is ok, convert promise from json
         const data = await resp.json();
-        console.log(data)
+        console.log("data: ", data) //data comes back as an object with key "records" and value of an array
+        // map through each record of the record array, make each todo an object with key/value pairs as properties
+        const todos = data.records.map((record) => {
+            // if iscompleted doesn't exist, set it to false
+            if(!record.fields.isCompleted) {
+              record.fields.iscompleted = false;
+            } 
+          // map properties to a todo object
+          const todo = {
+            id: record.id,
+            createdTime: record.createdTime,
+            title: record.fields.title,
+            isCompleted: record.fields.isCompleted
+          }
+          console.log(todo);
+          return todo;
+        })
+        setTodoList([...todos])
       } catch(error) {
-        console.log(error.message);
-      }
+        setErrorMessage(error.message)
+      } finally {
+        setIsLoading(false)
+      };
     };
     fetchTodos()
   }, [])
