@@ -19,6 +19,12 @@ function App() {
   const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
   const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
+  //function for handling dismissing a message
+  function handleDismiss() {
+    // set error message back to empty string
+    setErrorMessage("")
+  }
+
   useEffect(() => {
     const fetchTodos = async () => {
       // set options object for the fetch request
@@ -42,7 +48,7 @@ function App() {
         const todos = data.records.map((record) => {
             // if iscompleted doesn't exist, set it to false
             if(!record.fields.isCompleted) {
-              record.fields.iscompleted = false;
+              record.fields.isCompleted = false;
             } 
           // map properties to a todo object
           const todo = {
@@ -51,7 +57,7 @@ function App() {
             title: record.fields.title,
             isCompleted: record.fields.isCompleted
           }
-          console.log(todo);
+          // console.log(todo);
           return todo;
         })
         setTodoList([...todos])
@@ -106,8 +112,16 @@ function App() {
       <TodoList 
         todoList={todoList} 
         onCompleteTodo={completeTodo} 
-        onUpdateTodo={updateTodo}>
+        onUpdateTodo={updateTodo}
+        isLoading={isLoading}>
       </TodoList>
+      {errorMessage.length > 0 && 
+        <div>
+          <hr/>
+          <p>Error: {errorMessage}</p>
+          <button type='button' onClick={handleDismiss}>Dismiss</button>
+        </div>
+      }
     </div>
   )
 }
