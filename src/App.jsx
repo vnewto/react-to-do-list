@@ -133,7 +133,9 @@ function App() {
     }
 
     // function for updating a todo that updates the todo list state when a todo is edited
-    function updateTodo(editedTodo) {
+    async function updateTodo(editedTodo) {
+        //save originalTodo in case there is a network issue and the changes need to be reverted. find original todo based on matching id in todoList array
+        const originalTodo = todoList.find((todo) => todo.id === editedTodo.id);
         // map through the todos, comparing each todo.id with the updated todo's id
         const updatedTodos = todoList.map((todo) => {
             // if the id matches the id of the edited todo, return a new object that destructures the edited todo
@@ -143,6 +145,49 @@ function App() {
         });
         // update the todoList state value with updatedTodos
         setTodoList(updatedTodos);
+        //create payload object for fetch request
+        const payload = {
+            records: [
+                {
+                    id: editedTodo.id,
+                    fields: {
+                        title: editedTodo.title,
+                        isCompleted: editedTodo.isCompleted,
+                    },
+                },
+            ],
+        };
+        //create an options object for the fetch request using PATCH method
+        const options = {
+            method: 'PATCH',
+            headers: {
+                Authorization: token,
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        };
+        //try/catch/finally block in case of error
+        try {
+            const resp = await fetch(url, options);
+            // show error message if response not ok
+            if (!resp.ok) {
+                throw new Error(resp.message);
+            }
+        } catch (error) {
+            console.log(error.message);
+            setErrorMessage(`${error.message}. Reverting todo...`);
+            //go back to original todoList
+            const revertedTodos = updatedTodos.map((editedTodo) => {
+                if (editedTodo.id == originalTodo.id) {
+                    return { ...originalTodo };
+                }
+            });
+            //update state to revertedTodos
+            setTodoList([...revertedTodos]);
+        } finally {
+            //set isSaving state back to false
+            setIsSaving(false);
+        }
     }
 
     return (
