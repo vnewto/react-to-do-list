@@ -38,7 +38,7 @@ export default function TodoForm(props) {
                 elementId="todoTitle"
                 labelText="toDo"
             ></TextInputWithLabel>
-            <button type="submit" disabled={workingTodoTitle.trim === ''}>
+            <button type="submit" disabled={workingTodoTitle.trim() === ''}>
                 {props.isSaving ? 'Saving...' : 'Add Todo'}
             </button>
         </form>
