@@ -142,7 +142,7 @@ function App() {
                     id: completedTodo.id,
                     fields: {
                         title: completedTodo.title,
-                        isCompleted: completedTodo.isCompleted,
+                        isCompleted: true,
                     },
                 },
             ],
