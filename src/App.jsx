@@ -129,7 +129,7 @@ function App() {
         // map through the todos, comparing each todo.id with the updated todo's id
         const updatedTodos = todoList.map((todo) => {
             // if the id matches a todo item on the list, change isCompleted prop to true
-            if (todo.id == id) {
+            if (todo.id == completedTodo.id) {
                 return { ...todo, isCompleted: true };
             } else return todo;
         });
@@ -174,7 +174,7 @@ function App() {
             });
             //update state to revertedTodos
             setTodoList([...revertedTodos]);
-        } 
+        }
     }
 
     // function for updating a todo that updates the todo list state when a todo is edited
