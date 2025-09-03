@@ -2,20 +2,23 @@
 import TodoListItem from './TodoListItem.jsx'
 
 {/*extract from TodoList.jsx*/}
-function TodoList ({ todoList, onCompleteTodo, onUpdateTodo }) {
+function TodoList ({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
 
     const filteredTodoList = todoList.filter((todo) => todo.isCompleted == false)
 
     return (
         <>
-            {/* create ternary statement that compares todolist length to 0 */}
-            {filteredTodoList.length == 0 ? 
-                // if no items, display instructions to add todo
-                <p>Add a todo above to get started</p> : 
-                // if items, display items
-                <ul>
-                    {filteredTodoList.map(todo => <TodoListItem key={todo.id} todo={todo} onCompleteTodo={onCompleteTodo} onUpdateTodo={onUpdateTodo}/>)}
-                </ul>}
+            {/* Add a statement that conditionally renders the loading message based on isLoading */}
+            {isLoading ? 
+                <p>Loading your todos...</p> :
+                // create ternary statement that compares todolist length to 0
+                filteredTodoList.length == 0 ? 
+                    // if no items, display instructions to add todo
+                    <p>Add a todo above to get started</p> : 
+                    // if items, display items
+                    <ul>
+                        {filteredTodoList.map(todo => <TodoListItem key={todo.id} todo={todo} onCompleteTodo={onCompleteTodo} onUpdateTodo={onUpdateTodo}/>)}
+                    </ul>}
         </>
     );
 }
