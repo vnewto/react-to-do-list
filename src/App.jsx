@@ -3,6 +3,20 @@ import './App.css';
 import TodoList from './features/TodoList/TodoList.jsx';
 import TodoForm from './features/TodoForm.jsx';
 
+//declare url that will be used for fetch requests
+const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+
+// define function for building the query for the sort requests
+function encodeUrl({ sortField, sortDirection }) {
+    // define a template literal that combines the 2 sort query parameters, field and direction
+    let sortQuery = `?sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+    // returns encode uri method that puts together the url with the sort query
+    return encodeURI(`${url}${sortQuery}`);
+}
+
+// declare variable that will be used for fetch requests
+const token = `Bearer ${import.meta.env.VITE_PAT}`;
+
 function App() {
     // create a new state value for a new todo
     const [todoList, setTodoList] = useState([]);
@@ -13,12 +27,12 @@ function App() {
     // Create a state variable for errorMessage and default to an empty string
     const [errorMessage, setErrorMessage] = useState('');
 
-    // declare variables that will be used for fetch requests
-    const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
-    const token = `Bearer ${import.meta.env.VITE_PAT}`;
-
     //create state variable for conditional rendering of isSaving with AddTodo button
     const [isSaving, setIsSaving] = useState(false);
+
+    // create new state variables for sorting
+    const [sortField, setSortField] = useState('createdTime');
+    const [sortDirection, setSortDirection] = useState('desc');
 
     //function for handling dismissing a message
     function handleDismiss() {
@@ -37,7 +51,10 @@ function App() {
             setIsLoading(true);
             //set up try/catch/finally block for handling the fetch
             try {
-                const resp = await fetch(url, options);
+                const resp = await fetch(
+                    encodeUrl({ sortField, sortDirection }),
+                    options
+                );
                 // show error message if response not ok
                 if (!resp.ok) {
                     throw new Error(resp.message);
@@ -69,7 +86,7 @@ function App() {
             }
         };
         fetchTodos();
-    }, []);
+    }, [sortDirection, sortField]);
 
     // function for adding a new item to the todo list
     async function addTodo(newTodo) {
@@ -95,7 +112,10 @@ function App() {
         };
         try {
             setIsSaving(true);
-            const resp = await fetch(url, options);
+            const resp = await fetch(
+                encodeUrl({ sortField, sortDirection }),
+                options
+            );
             // show error message if response not ok
             if (!resp.ok) {
                 throw new Error(resp.message);
@@ -158,7 +178,10 @@ function App() {
         };
         //try/catch/finally block in case of error
         try {
-            const resp = await fetch(url, options);
+            const resp = await fetch(
+                encodeUrl({ sortField, sortDirection }),
+                options
+            );
             // show error message if response not ok
             if (!resp.ok) {
                 throw new Error(resp.message);
@@ -213,7 +236,10 @@ function App() {
         };
         //try/catch/finally block in case of error
         try {
-            const resp = await fetch(url, options);
+            const resp = await fetch(
+                encodeUrl({ sortField, sortDirection }),
+                options
+            );
             // show error message if response not ok
             if (!resp.ok) {
                 throw new Error(resp.message);
