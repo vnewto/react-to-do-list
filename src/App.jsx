@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import './App.css';
 import TodoList from './features/TodoList/TodoList.jsx';
 import TodoForm from './features/TodoForm.jsx';
+import TodosViewForm from './features/TodosViewForm.jsx';
 
 //declare url that will be used for fetch requests
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
@@ -273,6 +274,13 @@ function App() {
                 onUpdateTodo={updateTodo}
                 isLoading={isLoading}
             ></TodoList>
+            <hr></hr>
+            <TodosViewForm
+                sortDirection={sortDirection}
+                setSortDirection={setSortDirection}
+                sortField={sortField}
+                setSortField={setSortField}
+            ></TodosViewForm>
             {errorMessage.length > 0 && (
                 <div>
                     <hr />
