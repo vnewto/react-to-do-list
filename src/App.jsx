@@ -2,6 +2,27 @@ import { useState, useRef, useEffect } from 'react';
 import './App.css';
 import TodoList from './features/TodoList/TodoList.jsx';
 import TodoForm from './features/TodoForm.jsx';
+import TodosViewForm from './features/TodosViewForm.jsx';
+
+//declare url that will be used for fetch requests
+const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+
+// define function for building the query for the sort requests
+function encodeUrl({ sortField, sortDirection, queryString }) {
+    // define a template literal that combines the 2 sort query parameters, field and direction
+    let sortQuery = `?sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+    // Create an updatable variable (let) searchQuery set to an empty string
+    let searchQuery = '';
+    // if a search query is included, assign it a value
+    if (queryString) {
+        searchQuery = `&filterByFormula=SEARCH(LOWER("${queryString}"),+LOWER(title))`;
+    }
+    // return encode uri method that puts together the url with the sort query and search query
+    return encodeURI(`${url}${sortQuery}${searchQuery}`);
+}
+
+// declare variable that will be used for fetch requests
+const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
 function App() {
     // create a new state value for a new todo
@@ -13,12 +34,15 @@ function App() {
     // Create a state variable for errorMessage and default to an empty string
     const [errorMessage, setErrorMessage] = useState('');
 
-    // declare variables that will be used for fetch requests
-    const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
-    const token = `Bearer ${import.meta.env.VITE_PAT}`;
-
     //create state variable for conditional rendering of isSaving with AddTodo button
     const [isSaving, setIsSaving] = useState(false);
+
+    // create new state variables for sorting
+    const [sortField, setSortField] = useState('createdTime');
+    const [sortDirection, setSortDirection] = useState('desc');
+
+    // create state variable for search/filter feature
+    const [queryString, setQueryString] = useState('');
 
     //function for handling dismissing a message
     function handleDismiss() {
@@ -37,14 +61,17 @@ function App() {
             setIsLoading(true);
             //set up try/catch/finally block for handling the fetch
             try {
-                const resp = await fetch(url, options);
+                const resp = await fetch(
+                    encodeUrl({ sortField, sortDirection, queryString }),
+                    options
+                );
                 // show error message if response not ok
                 if (!resp.ok) {
                     throw new Error(resp.message);
                 }
                 // if response is ok, convert promise from json
                 const data = await resp.json();
-                console.log('data: ', data); //data comes back as an object with key "records" and value of an array
+                //data comes back as an object with key "records" and value of an array
                 // map through each record of the record array, make each todo an object with key/value pairs as properties
                 const todos = data.records.map((record) => {
                     // if iscompleted doesn't exist, set it to false
@@ -58,7 +85,6 @@ function App() {
                         title: record.fields.title,
                         isCompleted: record.fields.isCompleted,
                     };
-                    console.log(todo);
                     return todo;
                 });
                 setTodoList([...todos]);
@@ -69,7 +95,7 @@ function App() {
             }
         };
         fetchTodos();
-    }, []);
+    }, [sortDirection, sortField, queryString]);
 
     // function for adding a new item to the todo list
     async function addTodo(newTodo) {
@@ -95,7 +121,10 @@ function App() {
         };
         try {
             setIsSaving(true);
-            const resp = await fetch(url, options);
+            const resp = await fetch(
+                encodeUrl({ sortField, sortDirection, queryString }),
+                options
+            );
             // show error message if response not ok
             if (!resp.ok) {
                 throw new Error(resp.message);
@@ -158,7 +187,10 @@ function App() {
         };
         //try/catch/finally block in case of error
         try {
-            const resp = await fetch(url, options);
+            const resp = await fetch(
+                encodeUrl({ sortField, sortDirection, queryString }),
+                options
+            );
             // show error message if response not ok
             if (!resp.ok) {
                 throw new Error(resp.message);
@@ -213,7 +245,10 @@ function App() {
         };
         //try/catch/finally block in case of error
         try {
-            const resp = await fetch(url, options);
+            const resp = await fetch(
+                encodeUrl({ sortField, sortDirection, queryString }),
+                options
+            );
             // show error message if response not ok
             if (!resp.ok) {
                 throw new Error(resp.message);
@@ -247,6 +282,15 @@ function App() {
                 onUpdateTodo={updateTodo}
                 isLoading={isLoading}
             ></TodoList>
+            <hr></hr>
+            <TodosViewForm
+                sortDirection={sortDirection}
+                setSortDirection={setSortDirection}
+                sortField={sortField}
+                setSortField={setSortField}
+                queryString={queryString}
+                setQueryString={setQueryString}
+            ></TodosViewForm>
             {errorMessage.length > 0 && (
                 <div>
                     <hr />
