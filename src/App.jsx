@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import './App.css';
 import TodoList from './features/TodoList/TodoList.jsx';
 import TodoForm from './features/TodoForm.jsx';
@@ -6,20 +6,6 @@ import TodosViewForm from './features/TodosViewForm.jsx';
 
 //declare url that will be used for fetch requests
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
-
-// define function for building the query for the sort requests
-function encodeUrl({ sortField, sortDirection, queryString }) {
-    // define a template literal that combines the 2 sort query parameters, field and direction
-    let sortQuery = `?sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
-    // Create an updatable variable (let) searchQuery set to an empty string
-    let searchQuery = '';
-    // if a search query is included, assign it a value
-    if (queryString) {
-        searchQuery = `&filterByFormula=SEARCH(LOWER("${queryString}"),+LOWER(title))`;
-    }
-    // return encode uri method that puts together the url with the sort query and search query
-    return encodeURI(`${url}${sortQuery}${searchQuery}`);
-}
 
 // declare variable that will be used for fetch requests
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
@@ -50,6 +36,20 @@ function App() {
         setErrorMessage('');
     }
 
+    // create a variable encodeUrl and assign it to a useCallback. this function will be used to build the url for the query requests
+    const encodeUrl = useCallback(() => {
+        // define a template literal that combines the 2 sort query parameters, field and direction
+        let sortQuery = `?sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+        // Create an updatable variable (let) searchQuery set to an empty string
+        let searchQuery = '';
+        // if a search query is included, assign it a value
+        if (queryString) {
+            searchQuery = `&filterByFormula=SEARCH(LOWER("${queryString}"),+LOWER(title))`;
+        }
+        // return encode uri method that puts together the url with the sort query and search query
+        return encodeURI(`${url}${sortQuery}${searchQuery}`);
+    }, [sortField, sortDirection, queryString]);
+
     useEffect(() => {
         const fetchTodos = async () => {
             // set options object for the fetch request
@@ -61,10 +61,7 @@ function App() {
             setIsLoading(true);
             //set up try/catch/finally block for handling the fetch
             try {
-                const resp = await fetch(
-                    encodeUrl({ sortField, sortDirection, queryString }),
-                    options
-                );
+                const resp = await fetch(encodeUrl(), options);
                 // show error message if response not ok
                 if (!resp.ok) {
                     throw new Error(resp.message);
@@ -121,10 +118,7 @@ function App() {
         };
         try {
             setIsSaving(true);
-            const resp = await fetch(
-                encodeUrl({ sortField, sortDirection, queryString }),
-                options
-            );
+            const resp = await fetch(encodeUrl(), options);
             // show error message if response not ok
             if (!resp.ok) {
                 throw new Error(resp.message);
@@ -187,10 +181,7 @@ function App() {
         };
         //try/catch/finally block in case of error
         try {
-            const resp = await fetch(
-                encodeUrl({ sortField, sortDirection, queryString }),
-                options
-            );
+            const resp = await fetch(encodeUrl(), options);
             // show error message if response not ok
             if (!resp.ok) {
                 throw new Error(resp.message);
@@ -245,10 +236,7 @@ function App() {
         };
         //try/catch/finally block in case of error
         try {
-            const resp = await fetch(
-                encodeUrl({ sortField, sortDirection, queryString }),
-                options
-            );
+            const resp = await fetch(encodeUrl(), options);
             // show error message if response not ok
             if (!resp.ok) {
                 throw new Error(resp.message);
