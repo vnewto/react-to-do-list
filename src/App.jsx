@@ -261,7 +261,10 @@ function App() {
 
     return (
         <div className={classes.main}>
-            <h1>My ToDos</h1>
+            <div className={classes.header}>
+                <img src="./src/assets/react.svg"></img>
+                <h1>My ToDos</h1>
+            </div>
             {/* add instance of TodoForm */}
             <TodoForm onAddTodo={addTodo} isSaving={isSaving}></TodoForm>
             {/* add instance of TodoList */}
