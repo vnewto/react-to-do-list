@@ -9,10 +9,6 @@ h1 {
     color: #4a306d;
 }
 
-li {
-    list-style: none;
-}
-
 button {
     background-color: #a167a5;
     color: white;
@@ -24,3 +20,4 @@ button {
 button:hover {
     background-color: #4a306d;
 }
+

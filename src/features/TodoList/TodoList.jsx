@@ -13,7 +13,7 @@ function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
     );
 
     return (
-        <>
+        <div>
             {/* Add a statement that conditionally renders the loading message based on isLoading */}
             {isLoading ? (
                 <p>Loading your todos...</p>
@@ -23,7 +23,7 @@ function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
                 <p>Add a todo above to get started</p>
             ) : (
                 // if items, display items
-                <ul>
+                <ul className={classes.itemList}>
                     {filteredTodoList.map((todo) => (
                         <TodoListItem
                             key={todo.id}
@@ -34,7 +34,7 @@ function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
                     ))}
                 </ul>
             )}
-        </>
+        </div>
     );
 }
 
