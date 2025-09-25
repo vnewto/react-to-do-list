@@ -1,4 +1,12 @@
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+
+const StyledViewForm = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: center;
+`;
 
 export default function TodosViewForm({
     sortDirection,
@@ -44,7 +52,7 @@ export default function TodosViewForm({
 
     // build form with search, sortby, and sortdirection options for displaying todos
     return (
-        <form onSubmit={preventRefresh}>
+        <StyledViewForm onSubmit={preventRefresh}>
             <div>
                 <label htmlFor="search">Search todos</label>
                 <input
@@ -75,6 +83,6 @@ export default function TodosViewForm({
                     <option value="desc">Descending</option>
                 </select>
             </div>
-        </form>
+        </StyledViewForm>
     );
 }

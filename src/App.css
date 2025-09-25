@@ -1,0 +1,23 @@
+body {
+    background-color: #e8d7f1;
+    color: #0e273c;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
+    font-family: Copperplate, 'Copperplate Gothic Light', fantasy;
+    color: #4a306d;
+}
+
+button {
+    background-color: #a167a5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.3em 1.2em;
+}
+
+button:hover {
+    background-color: #4a306d;
+}
+

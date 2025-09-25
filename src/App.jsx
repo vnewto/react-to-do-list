@@ -3,6 +3,7 @@ import './App.css';
 import TodoList from './features/TodoList/TodoList.jsx';
 import TodoForm from './features/TodoForm.jsx';
 import TodosViewForm from './features/TodosViewForm.jsx';
+import classes from './App.module.css';
 
 //declare url that will be used for fetch requests
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
@@ -259,8 +260,11 @@ function App() {
     }
 
     return (
-        <div>
-            <h1>My ToDos</h1>
+        <div className={classes.main}>
+            <div className={classes.header}>
+                <img src="./src/assets/react.svg"></img>
+                <h1>My ToDos</h1>
+            </div>
             {/* add instance of TodoForm */}
             <TodoForm onAddTodo={addTodo} isSaving={isSaving}></TodoForm>
             {/* add instance of TodoList */}
@@ -279,11 +283,15 @@ function App() {
                 queryString={queryString}
                 setQueryString={setQueryString}
             ></TodosViewForm>
+            <hr />
             {errorMessage.length > 0 && (
-                <div>
-                    <hr />
+                <div className={classes.errorMessage}>
                     <p>Error: {errorMessage}</p>
-                    <button type="button" onClick={handleDismiss}>
+                    <button
+                        className={classes.errorButton}
+                        type="button"
+                        onClick={handleDismiss}
+                    >
                         Dismiss
                     </button>
                 </div>

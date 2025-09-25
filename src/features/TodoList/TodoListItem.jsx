@@ -1,5 +1,6 @@
 import {useState} from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel";
+import classes from './TodoListItem.module.css';
 
 function TodoListItem( {todo, onCompleteTodo, onUpdateTodo} ) {
     
@@ -47,7 +48,7 @@ function TodoListItem( {todo, onCompleteTodo, onUpdateTodo} ) {
             </form>
         ) : (
             // If false, display the existing form and its contents. The form will contain the checkbox input and the todo title.
-            <li>
+            <li className={classes.todoListItem}>
                 <form>
                     {/* add checkbox to change state to isCompleted for each todo item */}
                     <input 

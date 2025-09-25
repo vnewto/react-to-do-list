@@ -1,5 +1,19 @@
 import { useRef, useState } from 'react';
 import TextInputWithLabel from '../shared/TextInputWithLabel.jsx';
+import styled from 'styled-components';
+
+const StyledForm = styled.form`
+    padding-top: 2em;
+    border-top: dashed 2px #4a306d;
+`;
+
+const StyledButton = styled.button`
+    opacity: ${(props) => props.disabled && 0.5};
+    font-style: ${(props) => props.disabled && 'italic'};
+    &:hover {
+        background-color: ${(props) => props.disabled && '#a167a5'};
+    }
+`;
 
 //Create todo form component
 export default function TodoForm(props) {
@@ -29,7 +43,7 @@ export default function TodoForm(props) {
 
     return (
         // form to add a new todo item
-        <form onSubmit={handleAddTodo}>
+        <StyledForm onSubmit={handleAddTodo}>
             <TextInputWithLabel
                 type="text"
                 value={workingTodoTitle}
@@ -38,9 +52,12 @@ export default function TodoForm(props) {
                 elementId="todoTitle"
                 labelText="toDo"
             ></TextInputWithLabel>
-            <button type="submit" disabled={workingTodoTitle.trim() === ''}>
+            <StyledButton
+                type="submit"
+                disabled={workingTodoTitle.trim() === ''}
+            >
                 {props.isSaving ? 'Saving...' : 'Add Todo'}
-            </button>
-        </form>
+            </StyledButton>
+        </StyledForm>
     );
 }
