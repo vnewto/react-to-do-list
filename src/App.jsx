@@ -4,7 +4,8 @@ import './App.css';
 import TodosPage from './pages/TodosPage.jsx';
 import classes from './App.module.css';
 import Header from './shared/header.jsx';
-import About from './pages/About.jsx';
+import About from './pages/about.jsx';
+import NotFound from './pages/NotFound.jsx';
 
 import {
     reducer as todosReducer,
@@ -237,7 +238,7 @@ function App() {
             <Header title={title}></Header>
             <Routes>
                 <Route path="/about" element={<About />}></Route>
-                <Route path="/\/*" element={<h1>Not Found</h1>}></Route>
+                <Route path="*" element={<NotFound />}></Route>
                 <Route
                     path="/"
                     element={
