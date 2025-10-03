@@ -11,6 +11,8 @@ import {
     initialState as initialTodosState,
 } from './reducers/todos.reducer';
 
+import { useLocation } from 'react-router';
+
 //declare url that will be used for fetch requests
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 
@@ -27,6 +29,21 @@ function App() {
 
     // create state variable for search/filter feature
     const [queryString, setQueryString] = useState('');
+
+    //Import useLocation from React-Router and assign its return value to const location
+    const location = useLocation();
+
+    //create state variable for setting page title
+    const [title, setTitle] = useState('');
+
+    //Create a useEffect that sets the title based on location.pathname
+    useEffect(() => {
+        if (location.pathname === '/') {
+            setTitle('Todo List');
+        } else if (location.pathname === '/about') {
+            setTitle('About');
+        } else setTitle('Not Found');
+    }, [location.pathname]);
 
     //function for handling dismissing a message
     function handleDismiss() {
@@ -216,7 +233,7 @@ function App() {
 
     return (
         <div className={classes.main}>
-            <Header></Header>
+            <Header title={title}></Header>
             <TodosPage
                 onAddTodo={addTodo}
                 todoState={todoState}

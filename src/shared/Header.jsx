@@ -1,7 +1,7 @@
 import classes from './Header.module.css';
 import { NavLink } from 'react-router';
 
-export default function Header() {
+export default function Header({title}) {
     return (
         <div>
             <nav>
@@ -10,7 +10,7 @@ export default function Header() {
             </nav>
             <div className={classes.header}>
                 <img src="./src/assets/react.svg"></img>
-                <h1>My ToDos</h1>
+                <h1>{title}</h1>
             </div>
         </div>
     );
