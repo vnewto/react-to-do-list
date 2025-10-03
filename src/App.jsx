@@ -10,6 +10,7 @@ import './App.css';
 import TodoList from './features/TodoList/TodoList.jsx';
 import TodoForm from './features/TodoForm.jsx';
 import TodosViewForm from './features/TodosViewForm.jsx';
+import TodosPage from './pages/TodosPage.jsx';
 import classes from './App.module.css';
 import {
     reducer as todosReducer,
@@ -226,27 +227,18 @@ function App() {
                 <img src="./src/assets/react.svg"></img>
                 <h1>My ToDos</h1>
             </div>
-            {/* add instance of TodoForm */}
-            <TodoForm
+            <TodosPage
                 onAddTodo={addTodo}
-                isSaving={todoState.isSaving}
-            ></TodoForm>
-            {/* add instance of TodoList */}
-            <TodoList
-                todoList={todoState.todoList}
+                todoState={todoState}
                 onCompleteTodo={completeTodo}
                 onUpdateTodo={updateTodo}
-                isLoading={todoState.isLoading}
-            ></TodoList>
-            <hr></hr>
-            <TodosViewForm
                 sortDirection={sortDirection}
                 setSortDirection={setSortDirection}
                 sortField={sortField}
                 setSortField={setSortField}
                 queryString={queryString}
                 setQueryString={setQueryString}
-            ></TodosViewForm>
+            ></TodosPage>
             <hr />
             {todoState.errorMessage.length > 0 && (
                 <div className={classes.errorMessage}>
