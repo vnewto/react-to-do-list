@@ -1,14 +1,9 @@
-import {
-    useState,
-    useEffect,
-    useCallback,
-    useReducer,
-} from 'react';
+import { useState, useEffect, useCallback, useReducer } from 'react';
 import './App.css';
 
 import TodosPage from './pages/TodosPage.jsx';
 import classes from './App.module.css';
-import Header from './shared/Header.jsx';
+import Header from './shared/header.jsx';
 
 import {
     reducer as todosReducer,
@@ -83,7 +78,7 @@ function App() {
             }
         };
         fetchTodos();
-    }, [sortDirection, sortField, queryString]);
+    }, [sortDirection, sortField, queryString, encodeUrl]);
 
     // function for adding a new item to the todo list
     async function addTodo(newTodo) {

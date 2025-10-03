@@ -1,0 +1,26 @@
+nav {
+    display: flex;
+    justify-content: flex-end;
+    width: 100vw;
+}
+
+.header {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+}
+
+.active,
+.inactive {
+    padding: 1em;
+    text-decoration: none;
+}
+
+.active {
+    color: #a167a5;
+}
+
+.inactive {
+    color: #4a306d;
+}
