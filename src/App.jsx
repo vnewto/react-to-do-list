@@ -4,6 +4,7 @@ import './App.css';
 import TodosPage from './pages/TodosPage.jsx';
 import classes from './App.module.css';
 import Header from './shared/header.jsx';
+import About from './pages/About.jsx';
 
 import {
     reducer as todosReducer,
@@ -11,7 +12,7 @@ import {
     initialState as initialTodosState,
 } from './reducers/todos.reducer';
 
-import { useLocation } from 'react-router';
+import { useLocation, Routes, Route } from 'react-router';
 
 //declare url that will be used for fetch requests
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
@@ -234,18 +235,28 @@ function App() {
     return (
         <div className={classes.main}>
             <Header title={title}></Header>
-            <TodosPage
-                onAddTodo={addTodo}
-                todoState={todoState}
-                onCompleteTodo={completeTodo}
-                onUpdateTodo={updateTodo}
-                sortDirection={sortDirection}
-                setSortDirection={setSortDirection}
-                sortField={sortField}
-                setSortField={setSortField}
-                queryString={queryString}
-                setQueryString={setQueryString}
-            ></TodosPage>
+            <Routes>
+                <Route path="/about" element={<About />}></Route>
+                <Route path="/\/*" element={<h1>Not Found</h1>}></Route>
+                <Route
+                    path="/"
+                    element={
+                        <TodosPage
+                            onAddTodo={addTodo}
+                            todoState={todoState}
+                            onCompleteTodo={completeTodo}
+                            onUpdateTodo={updateTodo}
+                            sortDirection={sortDirection}
+                            setSortDirection={setSortDirection}
+                            sortField={sortField}
+                            setSortField={setSortField}
+                            queryString={queryString}
+                            setQueryString={setQueryString}
+                        />
+                    }
+                ></Route>
+            </Routes>
+
             <hr />
             {todoState.errorMessage.length > 0 && (
                 <div className={classes.errorMessage}>

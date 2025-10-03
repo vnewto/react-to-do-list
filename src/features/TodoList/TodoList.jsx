@@ -1,6 +1,8 @@
 // import TodoListItem
 import TodoListItem from './TodoListItem.jsx';
 
+import { useSearchParams } from 'react-router';
+
 //import css classes
 import classes from './TodoList.module.css';
 
@@ -11,6 +13,13 @@ function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
     const filteredTodoList = todoList.filter(
         (todo) => todo.isCompleted == false
     );
+
+    //setup for pagination
+    const [searchParams, setSearchParams] = useSearchParams();
+    const itemsPerPage = 15;
+    const currentPage = (parseInt(searchParams.get('page')) || -1, 10);
+    const indexOfFirstTodo = (currentPage - 1) * itemsPerPage;
+    const totalPages = Math.ceil(filteredTodoList.length / itemsPerPage);
 
     return (
         <div>
