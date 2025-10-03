@@ -1,17 +1,15 @@
 import {
     useState,
-    useRef,
     useEffect,
-    useMemo,
     useCallback,
     useReducer,
 } from 'react';
 import './App.css';
-import TodoList from './features/TodoList/TodoList.jsx';
-import TodoForm from './features/TodoForm.jsx';
-import TodosViewForm from './features/TodosViewForm.jsx';
+
 import TodosPage from './pages/TodosPage.jsx';
 import classes from './App.module.css';
+import Header from './shared/Header.jsx';
+
 import {
     reducer as todosReducer,
     actions as todoActions,
@@ -223,10 +221,7 @@ function App() {
 
     return (
         <div className={classes.main}>
-            <div className={classes.header}>
-                <img src="./src/assets/react.svg"></img>
-                <h1>My ToDos</h1>
-            </div>
+            <Header></Header>
             <TodosPage
                 onAddTodo={addTodo}
                 todoState={todoState}
