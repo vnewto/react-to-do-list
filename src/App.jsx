@@ -1,21 +1,19 @@
-import {
-    useState,
-    useRef,
-    useEffect,
-    useMemo,
-    useCallback,
-    useReducer,
-} from 'react';
+import { useState, useEffect, useCallback, useReducer } from 'react';
 import './App.css';
-import TodoList from './features/TodoList/TodoList.jsx';
-import TodoForm from './features/TodoForm.jsx';
-import TodosViewForm from './features/TodosViewForm.jsx';
+
+import TodosPage from './pages/TodosPage.jsx';
 import classes from './App.module.css';
+import Header from './shared/header.jsx';
+import About from './pages/about.jsx';
+import NotFound from './pages/NotFound.jsx';
+
 import {
     reducer as todosReducer,
     actions as todoActions,
     initialState as initialTodosState,
 } from './reducers/todos.reducer';
+
+import { useLocation, Routes, Route } from 'react-router';
 
 //declare url that will be used for fetch requests
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
@@ -33,6 +31,21 @@ function App() {
 
     // create state variable for search/filter feature
     const [queryString, setQueryString] = useState('');
+
+    //Import useLocation from React-Router and assign its return value to const location
+    const location = useLocation();
+
+    //create state variable for setting page title
+    const [title, setTitle] = useState('');
+
+    //Create a useEffect that sets the title based on location.pathname
+    useEffect(() => {
+        if (location.pathname === '/') {
+            setTitle('Todo List');
+        } else if (location.pathname === '/about') {
+            setTitle('About');
+        } else setTitle('Not Found');
+    }, [location.pathname]);
 
     //function for handling dismissing a message
     function handleDismiss() {
@@ -84,7 +97,7 @@ function App() {
             }
         };
         fetchTodos();
-    }, [sortDirection, sortField, queryString]);
+    }, [sortDirection, sortField, queryString, encodeUrl]);
 
     // function for adding a new item to the todo list
     async function addTodo(newTodo) {
@@ -222,31 +235,29 @@ function App() {
 
     return (
         <div className={classes.main}>
-            <div className={classes.header}>
-                <img src="./src/assets/react.svg"></img>
-                <h1>My ToDos</h1>
-            </div>
-            {/* add instance of TodoForm */}
-            <TodoForm
-                onAddTodo={addTodo}
-                isSaving={todoState.isSaving}
-            ></TodoForm>
-            {/* add instance of TodoList */}
-            <TodoList
-                todoList={todoState.todoList}
-                onCompleteTodo={completeTodo}
-                onUpdateTodo={updateTodo}
-                isLoading={todoState.isLoading}
-            ></TodoList>
-            <hr></hr>
-            <TodosViewForm
-                sortDirection={sortDirection}
-                setSortDirection={setSortDirection}
-                sortField={sortField}
-                setSortField={setSortField}
-                queryString={queryString}
-                setQueryString={setQueryString}
-            ></TodosViewForm>
+            <Header title={title}></Header>
+            <Routes>
+                <Route path="/about" element={<About />}></Route>
+                <Route path="*" element={<NotFound />}></Route>
+                <Route
+                    path="/"
+                    element={
+                        <TodosPage
+                            onAddTodo={addTodo}
+                            todoState={todoState}
+                            onCompleteTodo={completeTodo}
+                            onUpdateTodo={updateTodo}
+                            sortDirection={sortDirection}
+                            setSortDirection={setSortDirection}
+                            sortField={sortField}
+                            setSortField={setSortField}
+                            queryString={queryString}
+                            setQueryString={setQueryString}
+                        />
+                    }
+                ></Route>
+            </Routes>
+
             <hr />
             {todoState.errorMessage.length > 0 && (
                 <div className={classes.errorMessage}>

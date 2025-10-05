@@ -14,8 +14,3 @@
 .errorButton {
     background-color: black;
 }
-
-.header {
-    display: flex;
-    gap: 1em;
-}
