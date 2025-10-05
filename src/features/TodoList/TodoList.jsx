@@ -30,13 +30,13 @@ export default function TodoList({
     // Create a handler function handlePreviousPage that uses setSearchParams to set page to currentPage - 1 while preventing the value from decreasing below 1
     function handlePreviousPage() {
         if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+            setSearchParams(currentPage - 1);
         }
     }
 
     function handleNextPage() {
         if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
+            setSearchParams(currentPage + 1);
         }
     }
 
@@ -81,7 +81,7 @@ export default function TodoList({
                     <div className={classes.paginationControls}>
                         <button
                             className={classes.paginationBtn}
-                            onClick={() => handlePreviousPage}
+                            onClick={handlePreviousPage}
                             disabled={currentPage === 1}
                         >
                             Previous
@@ -91,7 +91,7 @@ export default function TodoList({
                         </span>
                         <button
                             className={classes.paginationBtn}
-                            onClick={() => handleNextPage}
+                            onClick={handleNextPage}
                             disabled={currentPage === totalPages}
                         >
                             Next
