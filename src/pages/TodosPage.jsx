@@ -3,10 +3,10 @@ import TodoList from '../features/TodoList/TodoList';
 import TodosViewForm from '../features/TodosViewForm';
 
 export default function TodosPage({
-    addTodo,
+    onAddTodo,
     todoState,
-    completeTodo,
-    updateTodo,
+    onCompleteTodo,
+    onUpdateTodo,
     sortDirection,
     setSortDirection,
     sortField,
@@ -17,14 +17,14 @@ export default function TodosPage({
     return (
         <>
             <TodoForm
-                onAddTodo={addTodo}
+                onAddTodo={onAddTodo}
                 isSaving={todoState.isSaving}
             ></TodoForm>
             <hr />
             <TodoList
                 todoList={todoState.todoList}
-                onCompleteTodo={completeTodo}
-                onUpdateTodo={updateTodo}
+                onCompleteTodo={onCompleteTodo}
+                onUpdateTodo={onUpdateTodo}
                 isLoading={todoState.isLoading}
             ></TodoList>
             <hr />
